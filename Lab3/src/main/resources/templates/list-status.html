@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lab 3 - Bai 4</title>
+</head>
+<body>
+<h3>Trạng thái phần tử trong danh sách</h3>
+
+<table>
+    <thead>
+    <tr>
+        <th rowspan="2">HỌ VÀ TÊN</th>
+        <th colspan="6">GIÁ TRỊ CÁC THUỘC TÍNH TRẠNG THÁI</th>
+    </tr>
+    <tr>
+        <th>Index</th>
+        <th>Count</th>
+        <th>First</th>
+        <th>Last</th>
+        <th>Odd</th>
+        <th>Even</th>
+    </tr>
+    </thead>
+    <tbody>
+    <th:block th:each="staff, st : ${list}">
+        <tr th:style="@{|background-color:${st.odd ? 'pink' : 'cyan'}|}">
+            <td class="name" th:text="${#strings.capitalizeWords(staff.fullname)}">Tên NV</td>
+            <td th:text="${st.index}">0</td>
+            <td th:text="${st.count}">1</td>
+            <td th:text="${st.first}">true</td>
+            <td th:text="${st.last}">false</td>
+            <td th:text="${st.odd}">true</td>
+            <td th:text="${st.even}">false</td>
+        </tr>
+    </th:block>
+    </tbody>
+</table>
+
+</body>
+</html>
