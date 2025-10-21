@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Gửi Mail</title>
+</head>
+<body>
+<h2>Gửi Mail</h2>
+
+<!-- Hiển thị message nếu có -->
+<div th:if="${message}" style="color: green; font-weight: bold; margin-bottom: 20px;">
+    <p th:text="${message}"></p>
+</div>
+
+<form th:action="@{/mail/send-form}" method="post" enctype="multipart/form-data">
+    <label>From: </label>
+    <input type="text" name="from" placeholder="yourEmail@gmail.com"/><br/><br/>
+
+    <label>To: </label>
+    <input type="text" name="to" placeholder="Receiver@gmail.com" required/><br/><br/>
+
+    <label>CC: </label>
+    <input type="text" name="cc" placeholder="CC"/><br/><br/>
+
+    <label>BCC: </label>
+    <input type="text" name="bcc" placeholder="BCC"/><br/><br/>
+
+    <label>Subject: </label>
+    <input type="text" name="subject" placeholder="Subject" required/><br/><br/>
+
+    <label>Body: </label><br/>
+    <textarea name="body" rows="5" cols="50" placeholder="Nội dung mail" required></textarea><br/><br/>
+
+    <label>Attachments (cách nhau bằng dấu ; hoặc ,): </label>
+    <input type="text" name="filenames" placeholder="Đường dẫn file"/><br/><br/>
+
+    <button type="submit" name="mode" value="direct">Gửi trực tiếp</button>
+    <button type="submit" name="mode" value="queue">Xếp vào hàng đợi</button>
+</form>
+
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Tìm sản phẩm</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f7f8fa; }
+        .container { max-width: 980px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        h2 { margin-top: 0; }
+        .search-form { display:flex; gap:10px; align-items:center; margin-bottom:16px; flex-wrap:wrap; }
+        .search-form input[type="text"], .search-form input[type="number"] { padding:6px 8px; border:1px solid #ccc; border-radius:4px; }
+        .search-form button { padding:7px 12px; border:none; background:#4a90e2; color:white; border-radius:4px; cursor:pointer; }
+        .search-form a.reset { color:#666; text-decoration:none; padding:6px 8px; border-radius:4px; }
+        table { width:100%; border-collapse:collapse; margin-top:12px; }
+        th, td { padding:10px; border:1px solid #e1e4e8; text-align:left; }
+        th { background:#f0f4f8; }
+        .no-result { color:#666; margin-top:12px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Tìm sản phẩm</h2>
+
+    <!-- Form tìm kiếm: method GET, tên input trùng controller -->
+    <form class="search-form" th:action="@{/product/search-dsl}" method="get">
+        <label> Tên:
+            <input type="text" name="name" placeholder="VD: samsung" th:value="${name}" />
+        </label>
+
+        <label> Min:
+            <input type="number" name="min" step="0.01" placeholder="0" th:value="${min}" />
+        </label>
+
+        <label> Max:
+            <input type="number" name="max" step="0.01" placeholder="999999" th:value="${max}" />
+        </label>
+
+        <button type="submit">Tìm</button>
+        <a class="reset" th:href="@{/product/search-dsl}">Reset</a>
+    </form>
+
+    <!-- Thông báo tóm tắt -->
+    <div th:if="${items != null}">
+        <p th:text="'Tìm thấy: ' + (${#lists.size(items)}) + ' sản phẩm'"></p>
+    </div>
+
+    <!-- Bảng kết quả -->
+    <div th:if="${items != null and #lists.size(items) > 0}">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tên</th>
+                <th>Giá</th>
+                <th>Loại</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="p : ${items}">
+                <td th:text="${p.id}">1</td>
+                <td th:text="${p.name}">Tên sản phẩm</td>
+                <td th:text="${#numbers.formatDecimal(p.price, 0, 'COMMA', 2, 'POINT')}">0.00</td>
+                <td th:text="${p.category}">Loại</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="no-result" th:if="${items == null or #lists.isEmpty(items)}">
+        <p>Không có kết quả. Hãy thử nhập tên hoặc khoảng giá (min và max).</p>
+    </div>
+</div>
+</body>
+</html>
