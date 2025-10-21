@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tìm kiếm và phân trang</title>
+</head>
+<body>
+<h2>Tìm kiếm sản phẩm</h2>
+
+<form action="/product/search-and-page" method="get">
+    <input name="keywords" th:value="${keywords}" placeholder="Nhập tên sản phẩm...">
+    <button type="submit">Search</button>
+</form>
+
+<table border="1" style="width:100%; margin-top:10px;">
+    <tr>
+        <th>ID</th>
+        <th>Tên sản phẩm</th>
+        <th>Giá</th>
+        <th>Ngày tạo</th>
+    </tr>
+    <th:block th:each="item : ${page.content}">
+        <tr>
+            <td th:text="${item.id}"></td>
+            <td th:text="${item.name}"></td>
+            <td th:text="${item.price}"></td>
+            <td th:text="${#dates.format(item.createDate, 'dd/MM/yyyy')}"></td>
+        </tr>
+    </th:block>
+</table>
+
+<div style="margin-top:10px;">
+    <a th:href="@{|/product/search-and-page?p=0|}">First</a> |
+    <a th:href="@{|/product/search-and-page?p=${page.number - 1}|}" th:if="${!page.first}">Previous</a> |
+    <a th:href="@{|/product/search-and-page?p=${page.number + 1}|}" th:if="${!page.last}">Next</a> |
+    <a th:href="@{|/product/search-and-page?p=${page.totalPages - 1}|}">Last</a>
+</div>
+
+<ul>
+    <li>Số thực thể hiện tại: [[${page.numberOfElements}]]</li>
+    <li>Trang số: [[${page.number}]]</li>
+    <li>Kích thước trang: [[${page.size}]]</li>
+    <li>Tổng số thực thể: [[${page.totalElements}]]</li>
+    <li>Tổng số trang: [[${page.totalPages}]]</li>
+</ul>
+
+</body>
+</html>
